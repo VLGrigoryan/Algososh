@@ -1,0 +1,38 @@
+.centeredContainer {
+	max-width: 960px;
+	margin: auto;
+	justify-content: space-between;
+	display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+	gap: 12px;
+}
+.small{
+	max-width: 204px;
+}
+.sortingList {
+	display: flex;
+	gap: 10px;
+	justify-content: center;
+	align-items: center;
+	height: 140px;
+}
+.wrappedCircle {
+	display: flex;
+	position: relative;
+	max-width: 952px;
+	align-content: center;
+	align-items: center;
+}
+.smallCircle{
+	position: absolute;
+	background-color: #fff;
+}
+.circleTop {
+	top: -65px;
+	left: 12px;
+}
+.circleBottom {
+	top: 120px;
+	left: 12px;
+}
