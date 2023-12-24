@@ -8,7 +8,7 @@ import { SHORT_DELAY_IN_MS } from "../../constants/delays";
 import { SortingMethod } from "../../types/sorting-method";
 
 export const SortingPage: React.FC = () => {
-  const [arr, setArr] = useState<ILetter<number>[]>(generateRandomArray());
+  const [arr, setArray] = useState<ILetter<number>[]>(generateRandomArray());
   const [selectedMethod, setSortingMethod] = useState(SortingMethod.Selection);
   const [steps, setSteps] = useState<ILetter<number>[][]>([]);
   const [currStep, setCurrStep] = useState<number | null>(null);
@@ -24,11 +24,18 @@ export const SortingPage: React.FC = () => {
     setTimeout(() => setCurrStep(currStep + 1), SHORT_DELAY_IN_MS);
   }, [currStep, steps]);
 
-  const handleSorting = (sortingDirection: Direction) => {
+  const handleSortingAscending = () => {
+    setDirection(Direction.Ascending);
     setLoading(true);
-    setSteps(getSortingSteps(arr, selectedMethod, sortingDirection));
+    setSteps(getSortingSteps(arr, selectedMethod, Direction.Ascending));
     setCurrStep(0);
-    setDirection(sortingDirection);
+  }
+
+  const handleSortingDescending = () => {
+    setDirection(Direction.Descending);
+    setLoading(true);
+    setSteps(getSortingSteps(arr, selectedMethod, Direction.Descending));
+    setCurrStep(0);
   };
 
   const renderColumns = (lettersArray: ILetter<number>[]) =>
@@ -40,13 +47,7 @@ export const SortingPage: React.FC = () => {
 
   return (
     <SolutionLayout title="Сортировка массива">
-      <form
-        className={styles.centeredContainer}
-        onSubmit={(e: FormEvent<HTMLFormElement>) => {
-          e.preventDefault();
-          handleSorting(Direction.Ascending);
-        }}
-      >
+      <form className={styles.centeredContainer}>
         <RadioInput
           label="Выбор"
           name="sortingMethod"
@@ -68,6 +69,7 @@ export const SortingPage: React.FC = () => {
           sorting={Direction.Ascending}
           isLoader={direction === Direction.Ascending}
           disabled={loading}
+          onClick={() => { handleSortingAscending() }}
         />
         <Button
           text="По убыванию"
@@ -76,11 +78,12 @@ export const SortingPage: React.FC = () => {
           extraClass={`ml-5 mr-35`}
           isLoader={direction === Direction.Descending}
           disabled={loading}
+          onClick={() => { handleSortingDescending() }}
         />
         <Button
           onClick={() => {
             setCurrStep(null);
-            setArr(generateRandomArray());
+            setArray(generateRandomArray());
           }}
           text="Новый массив"
           disabled={loading}
