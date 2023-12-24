@@ -8,7 +8,9 @@ import {
 } from "../ui";
 import { ElementStates } from "../../types/element-states";
 import styles from './list-page.module.css';
-import { getRandomListArr, list, IStateLoading, delay, ICircle } from "../../utils";
+import { delay } from "../../utils";
+import { IStateLoading, ICircle } from "../../types/list";
+import { getRandomListArr, list } from "./"
 
 export const ListPage: React.FC = () => {
   const [inputValue, setInputValue] = useState('');
@@ -116,28 +118,28 @@ export const ListPage: React.FC = () => {
         <Button
           linkedList="small"
           text='Добавить в head'
-           onClick={handleAddFromHead}
+          onClick={handleAddFromHead}
           isLoader={loading.addToHead}
           disabled={!inputValue || disabled || listArr.length >= 8}
         />
         <Button
           linkedList="small"
           text='Добавить в tail'
-           onClick={handleAddFromTail}
+          onClick={handleAddFromTail}
           isLoader={loading.addToTail}
           disabled={!inputValue || disabled || listArr.length >= 8}
         />
         <Button
           linkedList="small"
           text='Удалить из head'
-           onClick={handleDeleteFromHead}
+          onClick={handleDeleteFromHead}
           isLoader={loading.deleteFromHead}
           disabled={listArr.length <= 1 || disabled}
         />
         <Button
           linkedList="small"
           text='Удалить из tail'
-           onClick={handleDeleteFromTail}
+          onClick={handleDeleteFromTail}
           isLoader={loading.deleteFromTail}
           disabled={listArr.length <= 1 || disabled}
         />
@@ -154,7 +156,7 @@ export const ListPage: React.FC = () => {
         <Button
           linkedList="big"
           text='Добавить по индексу'
-           onClick={handleAddByIndex}
+          onClick={handleAddByIndex}
           isLoader={loading.addByIndex}
           disabled={
             !inputIndex ||
@@ -166,7 +168,7 @@ export const ListPage: React.FC = () => {
         />
         <Button
           text='Удалить по индексу'
-           linkedList="big"
+          linkedList="big"
           onClick={handleDeleteByIndex}
           isLoader={loading.deleteByIndex}
           disabled={

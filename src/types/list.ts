@@ -20,15 +20,6 @@ export interface IStateLoading {
   deleteByIndex: boolean;
 }
 
-export class Node<T> {
-  value: T;
-  next: Node<T> | null;
-  constructor(value: T, next: Node<T> | null = null) {
-    this.value = value;
-    this.next = next;
-  }
-}
-
 export interface INodeList<T> {
   append: (item: T) => void;
   prepend: (item: T) => void;
