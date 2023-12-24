@@ -1,7 +1,7 @@
 import React, { useState, ChangeEvent } from "react";
 import { Button, SolutionLayout, Input, Circle } from "../ui";
 import styles from "./queue-page.module.css";
-import { Queue } from "../../utils";
+import { Queue } from "./";
 import { SHORT_DELAY_IN_MS } from "../../constants/delays";
 import { ElementStates } from "../../types/element-states";
 import { HEAD, TAIL } from "../../constants/element-captions";
