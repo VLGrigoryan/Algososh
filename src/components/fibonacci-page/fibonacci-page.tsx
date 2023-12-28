@@ -42,7 +42,8 @@ export const FibonacciPage: React.FC = () => {
           isLimitText
           type="number"
           extraClass={`${styles.inputContainer} mr-6 mb-30`}
-          name="fibo"
+          name="fibonacci"
+          value={str}
           onChange={(e: ChangeEvent<HTMLInputElement>) => setStr(e.target.value)}
         />
         <Button
