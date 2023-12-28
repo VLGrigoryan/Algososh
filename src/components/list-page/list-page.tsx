@@ -44,64 +44,142 @@ export const ListPage: React.FC = () => {
     setDisabled(false);
   };
 
-  const handleAddFromHead = () => modifyList(() => list.prepend(inputValue), 0, ElementStates.Modified, { value: inputValue, type: 'top' });
-  const handleAddFromTail = () => modifyList(() => list.append(inputValue), listArr.length - 1, ElementStates.Modified, { value: inputValue, type: 'top' });
-  const handleDeleteFromHead = () => modifyList(() => list.deleteFromHead(), 0, ElementStates.Changing, { value: listArr[0].value, type: 'bottom' });
-  const handleDeleteFromTail = () => modifyList(() => list.deleteFromTail(), listArr.length - 1, ElementStates.Changing, { value: listArr[listArr.length - 1].value, type: 'bottom' });
+  const handleAddFromHead = async () => {
+    modifyList(() => list.prepend(inputValue), 0, ElementStates.Modified, { value: inputValue, type: 'top' });
+    await handleCommonAddingOperations("head", loading.addToHead)
+  }
+  const handleAddFromTail = async () => {
+    modifyList(() => list.append(inputValue), listArr.length - 1, ElementStates.Modified, { value: inputValue, type: 'top' });
+    await handleCommonAddingOperations("tail", loading.addToTail)
+  };
 
-  const handleAddByIndex = async () => {
-    setLoading({ ...loading, addByIndex: true });
-    setDisabled(true);
+  const handleDeleteFromHead = async () => {
+    setLoading({ ...loading, deleteFromHead: true })
+    setDisabled(true)
+    await handleCommonDeletingOperations("head", loading.deleteFromHead)
+  }
 
-    const index = parseInt(inputIndex);
-    if (index === list.getSize()) {
-      setInputIndex('');
-      handleAddFromTail();
-      return;
+  const handleDeleteFromTail = async () => {
+    setLoading({ ...loading, deleteFromTail: true })
+    setDisabled(true)
+    await handleCommonDeletingOperations("tail", loading.deleteFromTail)
+  }
+  const handleCommonAddingOperations = async (direction: string, operation: any) => {
+    await delay(500)
+    setInputValue('')
+    await delay(500)
+    if (direction === "tail") {
+      listArr[0].circle = undefined
+      listArr.push({
+        ...listArr[0],
+        value: inputValue,
+        state: ElementStates.Modified,
+      })
+      setListArr([...listArr])
     }
-    list.addByIndex(inputValue, index);
-    for (let i = 0; i <= index; i++) {
-      updateListArrState(i, ElementStates.Changing, { value: inputValue, type: 'top' });
-      await delay(500);
-      if (i > 0) {
-        updateListArrState(i - 1, ElementStates.Default);
-      }
+    else if (direction === "head") {
+      listArr.unshift({
+        ...listArr[0],
+        value: inputValue,
+        state: ElementStates.Modified,
+      })
     }
+    setListArr([...listArr])
+    await delay(500)
+    listArr[0].state = ElementStates.Default
+    setListArr([...listArr])
+    setLoading({ ...loading, [operation]: false });
+    setDisabled(false)
+  }
+
+  const handleCommonDeletingOperations = async (direction: string, operation: any) => {
     await delay(500);
-    updateListArrState(index, ElementStates.Default);
-    setListArr(prevArr => [
-      ...prevArr.slice(0, index),
-      { value: inputValue, state: ElementStates.Modified, circle: undefined },
-      ...prevArr.slice(index),
-    ]);
+    if (direction === "tail") {
+      listArr[listArr.length - 1] = {
+        ...listArr[listArr.length - 1],
+        circle: {
+          value: listArr[listArr.length - 1].value,
+          type: 'bottom',
+        },
+      }
+      setListArr([...listArr])
+      modifyList(() => list.deleteFromTail(), listArr.length - 1, ElementStates.Changing, { value: listArr[listArr.length - 1].value, type: 'bottom' });
+      await delay(500)
+      listArr.pop()
+    }
+    else if (direction === "head") {
+      listArr[0] = {
+        ...listArr[0],
+        circle: {
+          value: listArr[0].value,
+          type: 'bottom',
+        },
+      }
+      setListArr([...listArr])
+      modifyList(() => list.deleteFromHead(), 0, ElementStates.Changing, { value: listArr[0].value, type: 'bottom' }); setListArr([...listArr])
+      await delay(500)
+      listArr.shift()
+
+    }
+    setListArr([...listArr])
+    setLoading({ ...loading, [operation]: false });
+    setDisabled(false);
+  };
+
+  const handleCommonOperationsByIndex = async (operationType: string, operation: any) => {
+    if (operationType === "adding") {
+      const index = parseInt(inputIndex);
+      if (index === list.getSize()) {
+        setInputIndex('');
+        handleAddFromTail();
+        return;
+      }
+      list.addByIndex(inputValue, index);
+      for (let i = 0; i <= index; i++) {
+        updateListArrState(i, ElementStates.Changing, { value: inputValue, type: 'top' });
+        await delay(500);
+        if (i > 0) {
+          updateListArrState(i - 1, ElementStates.Default);
+        }
+      }
+      await delay(500);
+      updateListArrState(index, ElementStates.Default);
+      setListArr(prevArr => [
+        ...prevArr.slice(0, index),
+        { value: inputValue, state: ElementStates.Modified, circle: undefined },
+        ...prevArr.slice(index),
+      ]);
+    }
+    else if (operationType === "deleting") {
+      const index = parseInt(inputIndex);
+      list.deleteByIndex(index);
+      for (let i = 0; i <= index; i++) {
+        updateListArrState(i, ElementStates.Changing);
+        await delay(500);
+      }
+      updateListArrState(index, ElementStates.Changing, { value: listArr[index].value, type: 'bottom' });
+      await delay(500);
+      setListArr(prevArr => prevArr.slice(0, index).concat(prevArr.slice(index + 1)));
+      updateListArrState(index - 1, ElementStates.Modified);
+    }
     await delay(500);
     setListArr(prevArr => prevArr.map(item => ({ ...item, state: ElementStates.Default })));
     setInputValue('');
     setInputIndex('');
-    setLoading({ ...loading, addByIndex: false });
+    setLoading({ ...loading, [operation]: false });
     setDisabled(false);
+  };
+
+  const handleAddByIndex = async () => {
+    setLoading({ ...loading, addByIndex: true });
+    setDisabled(true);
+    await handleCommonOperationsByIndex("adding", loading.addByIndex)
   };
 
   const handleDeleteByIndex = async () => {
     setLoading({ ...loading, deleteByIndex: true });
     setDisabled(true);
-    const index = parseInt(inputIndex);
-    list.deleteByIndex(index);
-    for (let i = 0; i <= index; i++) {
-      updateListArrState(i, ElementStates.Changing);
-      await delay(500);
-    }
-    updateListArrState(index, ElementStates.Changing, { value: listArr[index].value, type: 'bottom' });
-    await delay(500);
-    setListArr(prevArr => prevArr.slice(0, index).concat(prevArr.slice(index + 1)));
-    updateListArrState(index - 1, ElementStates.Modified);
-    await delay(500);
-    setListArr(prevArr => prevArr.map(item => ({ ...item, state: ElementStates.Default })));
-    await delay(500);
-    setListArr(prevArr => prevArr.map(item => ({ ...item, state: ElementStates.Default })));
-    setInputIndex('');
-    setLoading({ ...loading, deleteByIndex: false });
-    setDisabled(false);
+    await handleCommonOperationsByIndex("deleting", loading.deleteByIndex)
   };
 
   return (
