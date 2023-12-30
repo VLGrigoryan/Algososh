@@ -1,0 +1,15 @@
+.centeredContainer {
+    max-width: max-content;
+    display: flex;
+    margin: 48px auto;
+}
+
+.SortingList {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 0;
+    list-style: none;
+    margin: 0;
+    row-gap: 60px;
+}
