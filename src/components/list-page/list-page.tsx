@@ -45,10 +45,12 @@ export const ListPage: React.FC = () => {
   };
 
   const handleAddFromHead = async () => {
+    setLoading({ ...loading, addToHead: true })
     modifyList(() => list.prepend(inputValue), 0, ElementStates.Modified, { value: inputValue, type: 'top' });
     await handleCommonAddingOperations("head", loading.addToHead)
   }
   const handleAddFromTail = async () => {
+    setLoading({ ...loading, addToTail: true })
     modifyList(() => list.append(inputValue), listArr.length - 1, ElementStates.Modified, { value: inputValue, type: 'top' });
     await handleCommonAddingOperations("tail", loading.addToTail)
   };
@@ -76,6 +78,8 @@ export const ListPage: React.FC = () => {
         state: ElementStates.Modified,
       })
       setListArr([...listArr])
+      await delay(500)
+      listArr[listArr.length - 1].state = ElementStates.Default
     }
     else if (direction === "head") {
       listArr.unshift({
@@ -83,11 +87,10 @@ export const ListPage: React.FC = () => {
         value: inputValue,
         state: ElementStates.Modified,
       })
+      setListArr([...listArr])
+      await delay(500)
+      listArr[0].state = ElementStates.Default
     }
-    setListArr([...listArr])
-    await delay(500)
-    listArr[0].state = ElementStates.Default
-    setListArr([...listArr])
     setLoading({ ...loading, [operation]: false });
     setDisabled(false)
   }
@@ -137,7 +140,10 @@ export const ListPage: React.FC = () => {
       list.addByIndex(inputValue, index);
       for (let i = 0; i <= index; i++) {
         updateListArrState(i, ElementStates.Changing, { value: inputValue, type: 'top' });
+
         await delay(500);
+        setListArr([...listArr])
+
         if (i > 0) {
           updateListArrState(i - 1, ElementStates.Default);
         }
