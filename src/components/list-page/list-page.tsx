@@ -265,7 +265,7 @@ export const ListPage: React.FC = () => {
       </form>
       <div className={`${styles.sortingList} mt-25`}>
         {listArr.map((item, index, arr) => (
-          <div className={styles.wrappedCircle} key={index}>
+          <div  className={styles.wrappedCircle} key={index}>
             <Circle
               key={index}
               index={index}

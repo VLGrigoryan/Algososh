@@ -71,9 +71,9 @@ export const StackPage: React.FC = () => {
       <ul className={styles.SortingList}>
         {currentStepIndex !== null &&
           stackSteps[currentStepIndex].map((item, index, arr) => (
-            <li key={index} className={`mr-4 ml-4`}>
+            <li  key={index} className={`mr-4 ml-4`}>
               <Circle
-                letter={item.value}
+                 letter={item.value}
                 state={item.state}
                 index={index}
                 head={index === arr.length - 1 ? "top" : null}

@@ -25,7 +25,7 @@ export const Circle: React.FC<CircleProps> = ({
   return (
     <div data-testid="circle" className={`${styles.content} ${extraClass}`}>
       <div 
-      // data-testid="head"
+      data-testid="head"
         className={`text text_type_input text_color_input mb-4 ${
           styles.absolute
         } ${styles.head} ${
