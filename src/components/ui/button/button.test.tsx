@@ -1,9 +1,6 @@
-import React from "react";
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Button } from "./button";
-import { AscendingIcon } from "../icons/ascending-icon";
-import { DescendingIcon } from "../icons/descending-icon";
 import { Direction } from "../../../types/direction";
 
 describe("Button component", () => {
@@ -53,18 +50,18 @@ describe("Button component", () => {
     expect(button).toBeDisabled();
     expect(button).toMatchSnapshot();
   });
-  
-it("calls onClick callback when clicked", () => {
-  const mockCb = jest.fn();
-  render(<Button onClick={mockCb} disabled={false} />);
-  const button = screen.getByTestId("button");
 
-  userEvent.click(button);
+  it("calls onClick callback when clicked", () => {
+    const mockCb = jest.fn();
+    render(<Button onClick={mockCb} disabled={false} />);
+    const button = screen.getByTestId("button");
 
-  expect(mockCb).not.toHaveBeenCalledTimes(1);
-  expect(button).toMatchSnapshot();
+    userEvent.click(button);
 
-});
+    expect(mockCb).not.toHaveBeenCalledTimes(1);
+    expect(button).toMatchSnapshot();
+
+  });
 
   it("does not call onClick when disabled", () => {
     const mockCb = jest.fn();

@@ -1,5 +1,5 @@
 import { IListArrItem, INodeList } from "../../types/list";
-import { ElementStates } from "../../types/element-states";
+import { ElementStates } from "../../types";
 
 export class Node<T> {
   value: T;

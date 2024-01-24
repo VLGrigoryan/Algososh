@@ -1,8 +1,5 @@
-import { ElementStates } from "../types/element-states";
-import { Direction } from "../types/direction";
-import { SortingMethod } from "../types/sorting-method";
+import { Direction, SortingMethod, ElementStates,Stack } from "../types";
 import { ILetter } from "../types/string";
-import { Stack } from "../types/stack";
 
 
 // StringPage
@@ -92,6 +89,15 @@ export const getSortingSteps = (
   const steps: ILetter<number>[][] = [];
   const copy = [...arr];
   const { length } = copy;
+  if (copy.length === 0) {
+    return steps
+  }
+  if (length === 1) {
+    const [element] = copy;
+    steps.push([{ ...element, state: ElementStates.Changing }]);
+    steps.push([{ ...element, state: ElementStates.Modified }]);
+    return steps;
+  }
 
   const setChangingState = (index: number) => {
     copy[index] = { ...copy[index], state: ElementStates.Changing };

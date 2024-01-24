@@ -3,9 +3,9 @@ import { Button, SolutionLayout, Input, Circle } from "../ui";
 import styles from "./stack-page.module.css";
 import { updateStackWithAction } from "../../utils";
 import { SHORT_DELAY_IN_MS } from "../../constants/delays";
+import { Stack } from "../../types";
 import { ILetter } from "../../types/string";
-import { Stack } from "../../types/stack";
- 
+
 export const StackPage: React.FC = () => {
   const [inputValue, setInputValue] = useState("");
   const [stackSteps, setStackSteps] = useState<ILetter<string>[][]>([]);
@@ -25,7 +25,7 @@ export const StackPage: React.FC = () => {
   }, [currentStepIndex, stackSteps]);
 
   const handleFormSubmit = (action: "push" | "pop") => (e: React.FormEvent<HTMLFormElement> | React.MouseEvent<HTMLButtonElement>) => {
-  e.preventDefault();
+    e.preventDefault();
     setLoading(true);
     setStackSteps(updateStackWithAction(stack, inputValue, action));
     setCurrentStepIndex(0);
@@ -42,7 +42,7 @@ export const StackPage: React.FC = () => {
   return (
     <SolutionLayout title="Стек">
       <form className={styles.centeredContainer} onSubmit={handleFormSubmit("push")} onReset={handleFormReset}>
-    <Input
+        <Input
           style={{ width: '377px' }}
           maxLength={4}
           isLimitText

@@ -6,7 +6,7 @@ import {
   Circle,
   ArrowIcon
 } from "../ui";
-import { ElementStates } from "../../types/element-states";
+import { ElementStates } from "../../types";
 import styles from './list-page.module.css';
 import { delay } from "../../utils";
 import { IStateLoading, ICircle } from "../../types/list";
