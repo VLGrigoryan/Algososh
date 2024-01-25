@@ -1,9 +1,5 @@
-import { ElementStates } from "../types/element-states";
-import { Direction } from "../types/direction";
-import { SortingMethod } from "../types/sorting-method";
+import { SortingMethod, Stack, Direction, ElementStates } from "../types";
 import { ILetter } from "../types/string";
-import { Stack } from "../types/stack";
-
 
 // StringPage
 function swap<T>(arr: T[], i1: number, i2: number): void {
@@ -92,7 +88,15 @@ export const getSortingSteps = (
   const steps: ILetter<number>[][] = [];
   const copy = [...arr];
   const { length } = copy;
-
+  if (copy.length === 0) {
+    return steps;
+  }
+  if (length === 1) {
+    const [element] = copy;
+    steps.push([{ ...element, state: ElementStates.Changing }]);
+    steps.push([{ ...element, state: ElementStates.Modified }]);
+    return steps;
+  }
   const setChangingState = (index: number) => {
     copy[index] = { ...copy[index], state: ElementStates.Changing };
   };
@@ -173,13 +177,10 @@ export function updateStackWithAction(
   return steps;
 }
 
-
-
 //listPage
 export const delay = (ms: number) =>
   new Promise<void>((resolve) => setTimeout(resolve, ms));
-  export interface ICircle {
-    value: string;
-    type: "top" | "bottom";
-  }
-  
+export interface ICircle {
+  value: string;
+  type: "top" | "bottom";
+}

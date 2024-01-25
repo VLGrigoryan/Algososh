@@ -3,9 +3,8 @@ import { Button, SolutionLayout, RadioInput, Column } from "../ui";
 import { getSortingSteps, generateRandomArray } from "../../utils";
 import { ILetter } from "../../types/string";
 import styles from "./sorting-page.module.css";
-import { Direction } from "../../types/direction";
 import { SHORT_DELAY_IN_MS } from "../../constants/delays";
-import { SortingMethod } from "../../types/sorting-method";
+import { SortingMethod, Direction } from "../../types";
 
 export const SortingPage: React.FC = () => {
   const [arr, setArray] = useState<ILetter<number>[]>(generateRandomArray());

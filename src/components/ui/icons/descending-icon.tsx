@@ -3,6 +3,7 @@ import React from "react";
 export const DescendingIcon = () => {
   return (
     <svg
+      data-testid="descending-icon"
       width="20"
       height="12"
       viewBox="0 0 20 12"
