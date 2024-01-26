@@ -1,6 +1,8 @@
+import { baseUrl } from "../../src/constants/testConstants";
+
 describe("Application works correctly with routes", () => {
   beforeEach(() => {
-    cy.visit("http://localhost:3000");
+    cy.visit(baseUrl);
   });
 
   it("should open the main page by default", () => {

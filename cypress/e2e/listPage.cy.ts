@@ -1,14 +1,16 @@
+import { baseUrl, SELECTORS } from "../../src/constants/testConstants";
+
 describe("List Page Functionality", () => {
   beforeEach(() => {
-    cy.visit("http://localhost:3000/list");
-    cy.get("input[placeholder='Введите значение']").as("inputField");
-    cy.contains("Добавить в head").as("addToHeadButton");
-    cy.contains("Добавить в tail").as("addToTailButton");
-    cy.contains("Удалить из head").as("deleteFromHeadButton");
-    cy.contains("Удалить из tail").as("deleteFromTailButton");
-    cy.get("input[placeholder='Введите индекс']").as("indexInput");
-    cy.contains("Добавить по индексу").as("addToIndexButton");
-    cy.contains("Удалить по индексу").as("deleteFromIndexButton");
+    cy.visit(`${baseUrl}/list`);
+    cy.get(SELECTORS.LIST_INPUT).as("inputField");
+    cy.contains(SELECTORS.ADD_TO_HEAD_BUTTON).as("addToHeadButton");
+    cy.contains(SELECTORS.ADD_TO_TAIL_BUTTON).as("addToTailButton");
+    cy.contains(SELECTORS.DELETE_FROM_HEAD_BUTTON).as("deleteFromHeadButton");
+    cy.contains(SELECTORS.DELETE_FROM_TAIL_BUTTON).as("deleteFromTailButton");
+    cy.get(SELECTORS.INDEX_INPUT).as("indexInput");
+    cy.contains(SELECTORS.ADD_TO_INDEX_BUTTON).as("addToIndexButton");
+    cy.contains(SELECTORS.DELETE_FROM_INDEX_BUTTON).as("deleteFromIndexButton");
   });
 
   it("should have inactive buttons when the input is empty", () => {
@@ -23,43 +25,43 @@ describe("List Page Functionality", () => {
   });
 
   it("renders the default list correctly", () => {
-    cy.get('[data-testid="circle"]').should("have.length", 4);
+    cy.get(SELECTORS.CIRCLE_TESTID).should("have.length", 4);
   });
 
   it("adds an element to head correctly", () => {
-     cy.get("@inputField").type("test");
+    cy.get("@inputField").type("test");
     cy.get("@addToHeadButton").click();
-    // cy.get('[data-testid="circle"]').eq(0).should("have.text", "test");
+    // cy.get(SELECTORS.CIRCLE_TESTID).eq(0).should("have.text", "test");
   });
 
   it("adds an element to tail correctly", () => {
-     cy.get("@inputField").type("test");
+    cy.get("@inputField").type("test");
     cy.get("@addToTailButton").click();
-    // cy.get('[data-testid="circle"]').eq(3).should("have.text", "test");
+    // cy.get(SELECTORS.CIRCLE_TESTID).eq(3).should("have.text", "test");
   });
 
   it("adds an element by index correctly", () => {
-     const inputIndex = "1";
+    const inputIndex = "1";
     cy.get("@inputField").type("test");
     cy.get("@indexInput").type(inputIndex);
     cy.get("@addToIndexButton").click();
-    cy.get('[data-testid="circle"]').eq(1).should("have.text", "test");
+    cy.get(SELECTORS.CIRCLE_TESTID).eq(1).should("have.text", "test");
   });
 
   it("deletes an element from head correctly", () => {
     cy.get("@deleteFromHeadButton").click();
-    cy.get('[data-testid="circle"]').should("have.length", 3);
+    cy.get(SELECTORS.CIRCLE_TESTID).should("have.length", 3);
   });
 
   it("deletes an element from tail correctly", () => {
     cy.get("@deleteFromTailButton").click();
-    cy.get('[data-testid="circle"]').should("have.length", 3);
+    cy.get(SELECTORS.CIRCLE_TESTID).should("have.length", 3);
   });
 
   it("deletes an element by index correctly", () => {
     const inputIndex = "1";
     cy.get("@indexInput").type(inputIndex);
     cy.get("@deleteFromIndexButton").click();
-    cy.get('[data-testid="circle"]').should("have.length", 3);
+    cy.get(SELECTORS.CIRCLE_TESTID).should("have.length", 3);
   });
 });
