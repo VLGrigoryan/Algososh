@@ -3,6 +3,7 @@ import React from "react";
 export const AscendingIcon = () => {
   return (
     <svg
+      data-testid="ascending-icon"
       width="20"
       height="12"
       viewBox="0 0 20 12"
